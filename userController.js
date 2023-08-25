@@ -155,7 +155,7 @@ exports.updateUser = async(req, res) => {
 
     try{
 
-    const {name, email, password, phoneNo} = req.body;
+    const {name, email, password,newPswd, confirmPswd, phoneNo} = req.body;
     const {existingPswd} = user.password;
     const {userId} = req.params;
 
@@ -175,8 +175,20 @@ exports.updateUser = async(req, res) => {
         
     }
     // generate new token
+    // If user wants to change the password
+    if(newPswd && confirmPswd){
+
+    if(newPswd === confirmPswd){
+        const pswdUpdate = await user.findByIdAndUpdate(userId, {password});
+    }
+
+    else{
+        throw new Error("Value of password and confirm password field should be same")
+    }
+}
     
     const userUpdated = await user.findByIdAndUpdate(userId, {name, email, password, phoneNo});
+    
 
     const regenratedToken = userUpdated.tokenGenerate();
     console.log(userUpdated);
@@ -184,6 +196,7 @@ exports.updateUser = async(req, res) => {
 
     userUpdated.password = undefined;
 
+    res.cookies("token", regenratedToken, cookieProp)
     res.status(202).json({
         success: true,
         message: "User credentials updated successfully",
