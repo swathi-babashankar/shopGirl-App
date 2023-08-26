@@ -48,7 +48,7 @@ exports.createProduct = async (req, res) => {
                     }
 
              })       
-            )
+            );
     
             let imgArray = await imgArrResp;
             const productCreated = await product.create({
