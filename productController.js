@@ -4,8 +4,6 @@ const formidable = require("formidable");
 import fs from "fs"
 import config from "../config/index.js";
 import {s3DeleteFile, s3FileUpload} from "../services/imageHandler.js"
-const { promises } = require("dns");
-
 
 exports.createProduct = async (req, res) => {
 
