@@ -75,3 +75,57 @@ exports.createProduct = async (req, res) => {
     )
     
 }
+
+exports.getProducts = async(req, res) => {
+
+    try{
+
+        const getAllprods = await product.find({})
+
+        res.status(202).json({
+            success: true,
+            message: "Products fetched successfully",
+            getAllprods
+        })
+
+    }
+
+    catch(err){
+
+        res.status(402).json({
+            success: false,
+            message: err.message
+        })
+
+
+
+    }
+}
+
+exports.getProductById = async(req, res) => {
+
+    try{
+
+        const {prodId} = req.params;
+        const getProdById = await product.findById({prodId})
+
+        if(getProdById){
+            res.status(202).json({
+                success: true,
+                message: "Products fetched successfully using productID",
+                getProdById
+            })
+        }
+
+    }
+
+    catch(err){
+
+        res.status(402).json({
+            success: false,
+            message: err.message
+        })
+
+    }
+}
+
